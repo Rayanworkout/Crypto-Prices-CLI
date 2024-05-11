@@ -1,8 +1,13 @@
 use std::collections::HashMap;
-
 mod utils;
 
-fn get_price(token: &str) -> f64 {
+fn get_price(token: &str, token_list: &[String; 5]) {
+    if !token_list.contains(&token.to_lowercase().to_owned()) {
+        println!("\n> Invalid token name \"{}\", see https://www.coingecko.com/ for full list.\nEnter it again: ", token);
+        let new_token = utils::collect_input_arg();
+        get_price(&new_token, &token_list);
+        return;
+    }
     let url = format!(
         "https://api.coingecko.com/api/v3/simple/price?ids={}&vs_currencies=usd",
         token
@@ -16,14 +21,22 @@ fn get_price(token: &str) -> f64 {
         .expect("Failed to parse JSON");
 
     match price.get(token) {
-        Some(data) => data.get("usd").unwrap().to_owned(),
-        None => panic!("\n> Invalid token name, see https://www.coingecko.com/ for full list\n"),
+        Some(data) => {
+            let price = data.get("usd").unwrap().to_owned();
+
+            println!("\n>> {}: {:.3} $\n", utils::capitalize(&token), price)
+        }
+        None => {
+            println!("\n> Invalid token name \"{}\", see https://www.coingecko.com/ for full list.\nEnter it again: ", token);
+        }
     }
 }
 
 fn main() {
-    let token = utils::collect_arg();
+    let token_list =
+        ["ethereum", "bitcoin", "solana", "dogecoin", "avalanche-2"].map(|t| String::from(t));
 
-    let token_price = get_price(&token);
-    println!("\n>> {}: {:.3} $\n", utils::capitalize(&token), token_price)
+    let token = utils::collect_cli_arg();
+
+    get_price(&token, &token_list);
 }
