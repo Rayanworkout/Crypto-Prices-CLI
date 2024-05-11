@@ -1,11 +1,28 @@
 use std::collections::HashMap;
+use std::io;
 mod utils;
 
-fn get_price(token: &str, token_list: &[String; 5]) {
-    if !token_list.contains(&token.to_lowercase().to_owned()) {
-        println!("\n> Invalid token name \"{}\", see https://www.coingecko.com/ for full list.\nEnter it again: ", token);
-        let new_token = utils::collect_input_arg();
-        get_price(&new_token, &token_list);
+fn get_price(token: &str, token_list: &[String; 5], force: bool) {
+    if !token_list.contains(&token.to_lowercase().to_owned()) && force == false {
+        println!(
+            "\n> \"{}\" is not in the tokens list, do you wish to make the API call anyway ?\n y/n",
+            token
+        );
+
+        let mut choice = String::new();
+
+        io::stdin()
+            .read_line(&mut choice)
+            .expect("Could not read input");
+
+        if ["y".to_string(), "yes".to_string(), "oui".to_string()]
+            .contains(&choice.trim().to_owned())
+        {
+            get_price(&token, &token_list, true);
+        } else {
+            println!("Aborting ...")
+        }
+
         return;
     }
     let url = format!(
@@ -28,6 +45,8 @@ fn get_price(token: &str, token_list: &[String; 5]) {
         }
         None => {
             println!("\n> Invalid token name \"{}\", see https://www.coingecko.com/ for full list.\nEnter it again: ", token);
+            let new_token = utils::collect_input_arg();
+            get_price(&new_token, &token_list, false)
         }
     }
 }
@@ -38,5 +57,5 @@ fn main() {
 
     let token = utils::collect_cli_arg();
 
-    get_price(&token, &token_list);
+    get_price(&token, &token_list, false);
 }
