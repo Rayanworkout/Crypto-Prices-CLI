@@ -14,20 +14,23 @@ pub fn capitalize(token: &str) -> String {
     }
 }
 
-pub fn collect_cli_arg() -> String {
-    // We assign arg to a match case, if no arg is provided, we exit with non 0 status code
-    match std::env::args().nth(1) {
-        Some(arg) => arg.to_lowercase(),
-        None => {
-            println!(
-                "\n> Please provide a token name (see https://www.coingecko.com/ for full list)."
-            );
-            collect_input_arg()
-        }
+pub fn collect_cli_args() -> Vec<String> {
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.len() < 2 {
+        println!(
+            "\n> Please provide at least one token name (see https://www.coingecko.com/ for full list)."
+        );
+        collect_input_arg()
+    } else {
+        args[1..]
+            .iter()
+            .map(|str| str.to_lowercase())
+            .collect::<Vec<String>>()
     }
 }
 
-pub fn collect_input_arg() -> String {
+pub fn collect_input_arg() -> Vec<String> {
     let mut input = String::new();
 
     // Allowing user to input token name if not provided at runtime
@@ -35,5 +38,5 @@ pub fn collect_input_arg() -> String {
         .read_line(&mut input)
         .expect("Could not read input");
 
-    input.trim().to_lowercase()
+    vec![input.trim().to_lowercase()]
 }
