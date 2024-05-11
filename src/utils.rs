@@ -1,3 +1,5 @@
+use std::io;
+
 pub fn capitalize(token: &str) -> String {
     // Function to capitalize a given string reference
     // If string reference is null, returns a new string
@@ -14,9 +16,17 @@ pub fn capitalize(token: &str) -> String {
 
 pub fn collect_arg() -> String {
     // We assign arg to a match case, if no arg is provided, we exit with non 0 status code
-    let arg = std::env::args()
-        .nth(1)
-        .expect("\n> Please enter token name, see https://www.coingecko.com/ for full list\n");
+    match std::env::args().nth(1) {
+        Some(arg) => arg.to_lowercase(),
+        None => {
+            println!("\n> Please enter token name below, see https://www.coingecko.com/ for full list");
+            let mut token = String::new();
 
-    arg.to_lowercase()
+            io::stdin()
+                .read_line(&mut token)
+                .expect("Could not read input");
+
+            token.trim().to_lowercase()
+        }
+    }
 }
