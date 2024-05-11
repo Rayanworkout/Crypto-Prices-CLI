@@ -1,8 +1,9 @@
-use crate::utils;
 use std::collections::HashMap;
 use std::io;
 
-pub fn get_price(token: &str, token_list: &[String; 5]) {
+use crate::utils;
+
+pub fn get_price(token: &str, token_list: &Vec<String>) {
     if !token_list.contains(&token.to_lowercase().to_owned()) {
         println!(
             "\n> \"{}\" is not in the tokens list, do you want to make the API call anyway ? y/n",
@@ -14,7 +15,9 @@ pub fn get_price(token: &str, token_list: &[String; 5]) {
             .read_line(&mut choice)
             .expect("Failed to read line");
 
-        if !["y".to_string(), "yes".to_string()].contains(&choice.trim().to_lowercase()) {
+        let yes = ["y".to_string(), "yes".to_string()].contains(&choice.trim().to_lowercase());
+
+        if !yes {
             println!("Aborting ...");
             return;
         }
@@ -35,7 +38,7 @@ pub fn get_price(token: &str, token_list: &[String; 5]) {
         Some(data) => {
             let price = data.get("usd").unwrap().to_owned();
 
-            println!("\n>> {}: {:.3} $\n", utils::capitalize(&token), price)
+            println!("\n>> {}: {:.2} $\n", utils::capitalize(&token), price)
         }
         None => {
             println!("\n> Invalid token name \"{}\", see https://www.coingecko.com/ for full list.\nEnter it again: ", token);
