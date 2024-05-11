@@ -1,14 +1,9 @@
 use serde::{Deserialize, Serialize};
-use std::error::Error;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Price {
     usd: f64,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Crypto {
-    ethereum: Price,
 }
 
 fn capitalize(token: &str) -> String {
@@ -27,33 +22,35 @@ fn capitalize(token: &str) -> String {
 
 fn collect_arg() -> String {
     // We assign arg to a match case, if no arg is provided, we exit with non 0 status code
-    match std::env::args().nth(1) {
-        Some(arg) => return capitalize(&arg),
-        None => {
-            panic!("\n> Please enter token name, see https://www.coingecko.com/ for full list\n");
-        }
-    };
+    let arg = std::env::args()
+        .nth(1)
+        .expect("\n> Please enter token name, see https://www.coingecko.com/ for full list\n");
+
+    arg
 }
 
-fn get_price(token: &str) -> Result<f64, Box<dyn Error>> {
+fn get_price(token: &str) -> f64 {
     let url = format!(
         "https://api.coingecko.com/api/v3/simple/price?ids={}&vs_currencies=usd",
         token
     );
-    let resp = reqwest::blocking::get(&url)?.text()?;
+    let resp = reqwest::blocking::get(&url)
+        .expect("Failed to fetch data from the API")
+        .text()
+        .expect("Failed to read response body");
 
-    let price: Result<f64, Box<dyn Error>> = match serde_json::from_str::<Crypto>(&resp) {
-        Ok(price) => Ok(price.ethereum.usd),
-        Err(err) => panic!("Error: {err}"),
-    };
+    let price =
+        serde_json::from_str::<HashMap<String, Price>>(&resp).expect("Failed to parse JSON");
 
-    price
+    match price.get(token) {
+        Some(data) => data.usd,
+        None => panic!("\n> Invalid token name, see https://www.coingecko.com/ for full list\n"),
+    }
 }
+
 fn main() {
     let token = collect_arg();
 
-    match get_price(&token) {
-        Ok(price) => println!("\n>> {}: {} $\n", token, price),
-        Err(_) => return,
-    }
+    let token_price = get_price(&token);
+    println!("\n>> {}: {:.3} $\n", capitalize(&token), token_price)
 }
