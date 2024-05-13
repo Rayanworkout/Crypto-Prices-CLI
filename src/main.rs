@@ -20,17 +20,17 @@ async fn main() {
                             &token, &closest_name
                         );
 
-                        match utils::confirm_choice() {
-                            true => get_price::get_price(&closest_name).await,
-                            false => {
-                                println!("\n> Do you want to make the API call anyway ? y/n",);
+                        // match utils::confirm_choice() {
+                        //     true => get_price::get_price(&closest_name).await,
+                        //     false => {
+                        //         println!("\n> Do you want to make the API call anyway ? y/n",);
 
-                                match utils::confirm_choice() {
-                                    true => get_price::get_price(&token).await,
-                                    false => println!("> Aborting API call for \"{}\".", &token),
-                                }
-                            }
+                        match utils::confirm_choice() {
+                            true => get_price::get_price(&token).await,
+                            false => println!("> Aborting API call for \"{}\".", &token),
                         }
+                        //     }
+                        // }
                     }
                     None => println!(
                         "> No matching cryptocurrency found for \"{}\", aborting ...",

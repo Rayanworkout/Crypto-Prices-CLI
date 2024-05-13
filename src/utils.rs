@@ -23,7 +23,7 @@ pub fn capitalize(token: &str) -> String {
 
 /// Function to collect command line arguments.
 ///
-/// It collects the arguments given at runtime and returns a vector of strings.
+/// It collects the arguments given at runtime and returns a vector of lowercase strings.
 pub fn collect_cli_args() -> Vec<String> {
     let args: Vec<String> = std::env::args().collect();
 
