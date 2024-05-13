@@ -1,7 +1,13 @@
+use std::collections::HashMap;
 use std::io;
 use strsim::levenshtein;
-use std::collections::HashMap;
 
+
+/// Function to capitalize a given string reference.
+/// 
+/// If string reference is null, returns a new string.
+/// 
+/// Returns a new string with the first letter capitalized.
 pub fn capitalize(token: &str) -> String {
     // Function to capitalize a given string reference
     // If string reference is null, returns a new string
@@ -16,6 +22,10 @@ pub fn capitalize(token: &str) -> String {
     }
 }
 
+
+/// Function to collect command line arguments.
+/// 
+/// It collects the arguments given at runtime and returns a vector of strings.
 pub fn collect_cli_args() -> Vec<String> {
     let args: Vec<String> = std::env::args().collect();
 
@@ -32,6 +42,10 @@ pub fn collect_cli_args() -> Vec<String> {
     }
 }
 
+
+/// Function to collect input from the user.
+///
+/// Returns a vector with the input string to lowercase.
 pub fn collect_input_arg() -> Vec<String> {
     let mut input = String::new();
 
@@ -43,6 +57,17 @@ pub fn collect_input_arg() -> Vec<String> {
     vec![input.trim().to_lowercase()]
 }
 
+/// Function to confirm a choice from the user.
+///
+/// The user is prompted to confirm a choice with a yes or no.
+/// 
+/// Returns yes if the user confirms with a yes, otherwise false.
+/// ```
+/// match confirm_choice() {
+///    true => println!("\n> User chose yes ..."),
+///    false => println!("\n> User chose no ..."),
+/// ```
+///
 pub fn confirm_choice() -> bool {
     let mut choice = String::new();
 
@@ -59,14 +84,16 @@ pub fn confirm_choice() -> bool {
     }
 }
 
-
-/// Function to find the closest match of user input
-/// required to change one string into the other.
-///
+/// Function to find the closest match of a given string in a list of strings.
+/// 
+/// Here we find the closest token name to the input string.
 /// ```
-/// use strsim::levenshtein;
-///
-/// assert_eq!(3, levenshtein("kitten", "sitting"));
+/// match find_closest_match(&string, &string_list) {
+///     Some(closest_name) => {
+///         println!(
+///             "> \"{}\" was not found. Did you mean {}? (y/n)",
+///             &string, &closest_name
+///         );
 /// ```
 pub fn find_closest_match<'a>(input: &'a str, crypto_names: &'a Vec<String>) -> Option<&'a str> {
     let mut similarities: HashMap<&str, usize> = HashMap::new();

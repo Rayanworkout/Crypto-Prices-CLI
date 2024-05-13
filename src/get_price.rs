@@ -2,6 +2,10 @@ use std::collections::HashMap;
 
 use crate::utils;
 
+
+/// Function to get the price of a given token.
+/// 
+/// It fetches the price of a given token from the CoinGecko API.
 pub async fn get_price(token: &str) {
     let url = format!(
         "https://api.coingecko.com/api/v3/simple/price?ids={}&vs_currencies=usd",
