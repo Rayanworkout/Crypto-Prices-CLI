@@ -1,4 +1,6 @@
 use std::io;
+use strsim::levenshtein;
+use std::collections::HashMap;
 
 pub fn capitalize(token: &str) -> String {
     // Function to capitalize a given string reference
@@ -41,7 +43,7 @@ pub fn collect_input_arg() -> Vec<String> {
     vec![input.trim().to_lowercase()]
 }
 
-pub fn confirm_api_call() -> bool {
+pub fn confirm_choice() -> bool {
     let mut choice = String::new();
 
     io::stdin()
@@ -55,4 +57,26 @@ pub fn confirm_api_call() -> bool {
     } else {
         false
     }
+}
+
+
+/// Function to find the closest match of user input
+/// required to change one string into the other.
+///
+/// ```
+/// use strsim::levenshtein;
+///
+/// assert_eq!(3, levenshtein("kitten", "sitting"));
+/// ```
+pub fn find_closest_match<'a>(input: &'a str, crypto_names: &'a Vec<String>) -> Option<&'a str> {
+    let mut similarities: HashMap<&str, usize> = HashMap::new();
+
+    for name in crypto_names {
+        let distance = levenshtein(input, &name);
+        similarities.insert(&name, distance);
+    }
+
+    let (closest_name, _) = similarities.iter().min_by_key(|&(_, &dist)| dist)?;
+
+    Some(closest_name)
 }
