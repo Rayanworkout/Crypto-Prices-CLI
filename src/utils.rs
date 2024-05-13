@@ -105,6 +105,14 @@ pub fn find_closest_match<'a>(input: &'a str, target_list: &'a Vec<String>) -> O
     Some(closest_name)
 }
 
+
+/// Function to map the user input to a list of known values.
+/// 
+/// It is used to gain some time and allow user to use aliases.
+/// For example, "eth" is an alias for "ethereum".
+/// This way, we don't have to use the find_closest_match function.
+/// 
+/// Returns either the found token or None.
 pub fn map_input_to_value(input: &str) -> Option<String> {
     let mut known_variants: HashMap<String, Vec<String>> = HashMap::new();
 

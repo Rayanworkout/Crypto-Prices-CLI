@@ -36,7 +36,7 @@ async fn main() {
 
                                 match utils::confirm_choice() {
                                     true => get_price::get_price(&token).await,
-                                    false => println!("> Aborting API call for \"{}\"", &token),
+                                    false => println!("> Aborting API call for \"{}\".", &token),
                                 }
                             }
                         }
