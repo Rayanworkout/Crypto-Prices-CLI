@@ -40,3 +40,19 @@ pub fn collect_input_arg() -> Vec<String> {
 
     vec![input.trim().to_lowercase()]
 }
+
+pub fn confirm_api_call() -> bool {
+    let mut choice = String::new();
+
+    io::stdin()
+        .read_line(&mut choice)
+        .expect("Failed to read line");
+
+    let yes = ["y".to_string(), "yes".to_string()].contains(&choice.trim().to_lowercase());
+
+    if yes {
+        true
+    } else {
+        false
+    }
+}
