@@ -9,7 +9,7 @@ If you wish to install this small project on your local machine, follow these st
 
 _Note: you need to have Rust and cargo installed on your machine. These steps will work under Linux, MacOS and Windows._
 
-If you don't want to build the project yourself, you can download the binary from [here]()
+If you don't want to build the project yourself, you can download the binary from [here](/crypto_prices)
 
 ```bash
   git clone https://github.com/Rayanworkout/Crypto-Prices-CLI.git
