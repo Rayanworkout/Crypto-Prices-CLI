@@ -2,11 +2,10 @@ use std::collections::HashMap;
 use std::io;
 use strsim::levenshtein;
 
-
 /// Function to capitalize a given string reference.
-/// 
+///
 /// If string reference is null, returns a new string.
-/// 
+///
 /// Returns a new string with the first letter capitalized.
 pub fn capitalize(token: &str) -> String {
     // Function to capitalize a given string reference
@@ -22,9 +21,8 @@ pub fn capitalize(token: &str) -> String {
     }
 }
 
-
 /// Function to collect command line arguments.
-/// 
+///
 /// It collects the arguments given at runtime and returns a vector of strings.
 pub fn collect_cli_args() -> Vec<String> {
     let args: Vec<String> = std::env::args().collect();
@@ -41,7 +39,6 @@ pub fn collect_cli_args() -> Vec<String> {
             .collect::<Vec<String>>()
     }
 }
-
 
 /// Function to collect input from the user.
 ///
@@ -60,7 +57,7 @@ pub fn collect_input_arg() -> Vec<String> {
 /// Function to confirm a choice from the user.
 ///
 /// The user is prompted to confirm a choice with a yes or no.
-/// 
+///
 /// Returns yes if the user confirms with a yes, otherwise false.
 /// ```
 /// match confirm_choice() {
@@ -85,7 +82,7 @@ pub fn confirm_choice() -> bool {
 }
 
 /// Function to find the closest match of a given string in a list of strings.
-/// 
+///
 /// Here we find the closest token name to the input string.
 /// ```
 /// match find_closest_match(&string, &string_list) {
@@ -95,15 +92,37 @@ pub fn confirm_choice() -> bool {
 ///             &string, &closest_name
 ///         );
 /// ```
-pub fn find_closest_match<'a>(input: &'a str, crypto_names: &'a Vec<String>) -> Option<&'a str> {
+pub fn find_closest_match<'a>(input: &'a str, target_list: &'a Vec<String>) -> Option<&'a str> {
     let mut similarities: HashMap<&str, usize> = HashMap::new();
 
-    for name in crypto_names {
+    for name in target_list {
         let distance = levenshtein(input, &name);
         similarities.insert(&name, distance);
     }
 
-    let (closest_name, _) = similarities.iter().min_by_key(|&(_, &dist)| dist)?;
+    let (closest_name, _) = similarities.iter().min_by_key(|&(_, &distance)| distance)?;
 
     Some(closest_name)
+}
+
+pub fn map_input_to_value(input: &str) -> Option<String> {
+    let mut known_variants: HashMap<String, Vec<String>> = HashMap::new();
+
+    known_variants.insert(
+        "ethereum".to_string(),
+        vec!["eth", "ether", "e"]
+            .iter()
+            .map(|e| e.to_string())
+            .collect(),
+    );
+
+    known_variants.insert("bitcoin".to_string(), vec!["btc".to_string()]);
+    
+    for (key, value) in &known_variants {
+        if value.contains(&input.to_owned()) {
+            return Some(key.to_owned())
+        }
+    }
+
+    None
 }
