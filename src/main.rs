@@ -3,23 +3,14 @@ mod utils;
 
 #[tokio::main]
 async fn main() {
-    let known_tokens: Vec<String> = vec![
-        "ethereum",
-        "bitcoin",
-        "solana",
-        "dogecoin",
-        "avalanche-2",
-        "polkadot",
-        "chainlink",
-    ]
-    .iter()
-    .map(|t| t.to_string())
-    .collect();
+    const CRYPTO_LIST: &str = include_str!("cryptocurrencies.txt");
+
+    let known_tokens: Vec<&str> = CRYPTO_LIST.trim().split('\n').collect();
 
     let tokens = utils::collect_cli_args();
 
     for token in tokens {
-        if !known_tokens.contains(&token.to_lowercase()) {
+        if !known_tokens.contains(&token.to_lowercase().as_str()) {
             match utils::map_input_to_value(&token) {
                 Some(found_value) => get_price::get_price(&found_value).await,
                 None => match utils::find_closest_match(&token, &known_tokens) {

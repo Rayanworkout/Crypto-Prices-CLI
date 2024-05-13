@@ -92,7 +92,7 @@ pub fn confirm_choice() -> bool {
 ///             &string, &closest_name
 ///         );
 /// ```
-pub fn find_closest_match<'a>(input: &'a str, target_list: &'a Vec<String>) -> Option<&'a str> {
+pub fn find_closest_match<'a>(input: &'a str, target_list: &'a Vec<&str>) -> Option<&'a str> {
     let mut similarities: HashMap<&str, usize> = HashMap::new();
 
     for name in target_list {
