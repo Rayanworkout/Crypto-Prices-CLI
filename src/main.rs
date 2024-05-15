@@ -1,12 +1,10 @@
-mod utils;
 mod get_price;
+mod utils;
+use crypto_prices::CRYPTO_LIST;
 
 #[tokio::main]
 async fn main() {
-    const CRYPTO_LIST: &str = include_str!("cryptocurrencies.txt");
-
     let known_tokens: Vec<&str> = CRYPTO_LIST.trim().split('\n').collect();
-
     let tokens = utils::collect_cli_args();
 
     for token in tokens {
