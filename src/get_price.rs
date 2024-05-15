@@ -42,7 +42,7 @@ pub async fn get_price(token: &str) -> Result<(), GetPriceError> {
     
     // Accessing price from object like: {"token": {"usd": XXX}}
     let price = match price_object.get(token) {
-        Some(token) => match token.get("us") {
+        Some(token) => match token.get("usd") {
             Some(value) => value,
             None => {
                 return Err(GetPriceError::JsonDeserialize(format!("could not parse the following data: {resp}")));

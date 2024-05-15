@@ -27,7 +27,7 @@ async fn main() {
                         //         println!("\n> Do you want to make the API call anyway ? y/n",);
 
                         match utils::confirm_choice() {
-                            true => get_price::get_price(&token).await
+                            true => get_price::get_price(&closest_name).await
                             .unwrap_or_else(|err| eprintln!("{err}")),
                             false => println!("> Aborting API call for \"{token}\".",),
                         }
