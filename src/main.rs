@@ -39,7 +39,7 @@ async fn main() {
                 },
             }
         } else {
-            get_price::get_price(&token).await
+            get_price::get_price(&token).await;
         }
     }
 }

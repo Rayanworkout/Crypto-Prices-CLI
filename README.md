@@ -5,11 +5,23 @@ A small command-line interface (CLI) project written in Rust. With it you can ea
 
 ## Deployment
 
-If you wish to install this small project on your local machine, follow these steps:
 
-_Note: you need to have Rust and cargo installed on your machine. These steps will work under Linux, MacOS and Windows._
+Once the repo is cloned, you just have to run:
 
-If you don't want to build the project yourself, you can download the binary from [here](/crypto_prices)
+Linux / MacOS users:
+```bash
+chmod +x crypto_prices
+./crypto_prices ethereum # or any other cryptocurrency
+```
+
+Windows users:
+```bash
+.\crypto_prices.exe ethereum # or any other cryptocurrency
+```
+
+If you wish to compile this small project on your local machine, follow these steps:
+
+_Note: you need to have [Rust and cargo](https://doc.rust-lang.org/book/ch01-01-installation.html) installed. These steps will work under Linux, MacOS and Windows._
 
 ```bash
   git clone https://github.com/Rayanworkout/Crypto-Prices-CLI.git

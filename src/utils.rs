@@ -8,11 +8,6 @@ use strsim::levenshtein;
 ///
 /// Returns a new string with the first letter capitalized.
 pub fn capitalize(token: &str) -> String {
-    // Function to capitalize a given string reference
-    // If string reference is null, returns a new string
-    // Note that the first letter does not appear twice
-    // Because of the behavior of next(), which advance the iterator
-    // So the first char is exhausted
     let mut char_1 = token.chars();
 
     match char_1.next() {
@@ -105,13 +100,12 @@ pub fn find_closest_match<'a>(input: &'a str, target_list: &'a Vec<&str>) -> Opt
     Some(closest_name)
 }
 
-
 /// Function to map the user input to a list of known values.
-/// 
+///
 /// It is used to gain some time and allow user to use aliases.
 /// For example, "eth" is an alias for "ethereum".
 /// This way, we don't have to use the find_closest_match function.
-/// 
+///
 /// Returns either the found token or None.
 pub fn map_input_to_value(input: &str) -> Option<String> {
     let mut known_variants: HashMap<String, Vec<String>> = HashMap::new();
@@ -125,10 +119,10 @@ pub fn map_input_to_value(input: &str) -> Option<String> {
     );
 
     known_variants.insert("bitcoin".to_string(), vec!["btc".to_string()]);
-    
+
     for (key, value) in &known_variants {
         if value.contains(&input.to_owned()) {
-            return Some(key.to_owned())
+            return Some(key.to_owned());
         }
     }
 
