@@ -1,5 +1,4 @@
-use std::collections::HashMap;
-use std::io;
+use std::{collections::HashMap, io};
 use strsim::levenshtein;
 
 /// Function to capitalize a given string reference.
