@@ -67,7 +67,7 @@ pub fn confirm_choice() -> bool {
         .read_line(&mut choice)
         .expect("Failed to read line");
 
-    let yes = ["y".to_string(), "yes".to_string()].contains(&choice.trim().to_lowercase());
+    let yes = ["y", "yes"].contains(&choice.trim().to_lowercase().as_str());
 
     if yes {
         true

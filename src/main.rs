@@ -12,12 +12,11 @@ async fn main() {
     for token in tokens {
         if !known_tokens.contains(&token.to_lowercase().as_str()) {
             match utils::map_input_to_value(&token) {
-                Some(found_value) => get_price::get_price(&found_value).await,
+                Some(found_value) => get_price::get_price(&found_value).await.unwrap(),
                 None => match utils::find_closest_match(&token, &known_tokens) {
                     Some(closest_name) => {
                         println!(
-                            "> \"{}\" was not found. Did you mean {}? (y/n)",
-                            &token, &closest_name
+                            "> \"{token}\" was not found. Did you mean {closest_name}? (y/n)"
                         );
 
                         // match utils::confirm_choice() {
@@ -26,20 +25,20 @@ async fn main() {
                         //         println!("\n> Do you want to make the API call anyway ? y/n",);
 
                         match utils::confirm_choice() {
-                            true => get_price::get_price(&token).await,
-                            false => println!("> Aborting API call for \"{}\".", &token),
+                            true => get_price::get_price(&token).await.unwrap(),
+                            false => println!("> Aborting API call for \"{token}\".",),
                         }
                         //     }
                         // }
                     }
                     None => println!(
-                        "> No matching cryptocurrency found for \"{}\", aborting ...",
-                        &token
+                        "> No matching cryptocurrency found for \"{token}\", aborting ...",
+                        
                     ),
                 },
             }
         } else {
-            get_price::get_price(&token).await;
+            get_price::get_price(&token).await.unwrap();
         }
     }
 }
