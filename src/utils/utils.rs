@@ -1,18 +1,18 @@
 use std::{collections::HashMap, io};
 use strsim::levenshtein;
 
-/// Function to capitalize a given string reference.
+/// Function to collect input from the user.
 ///
-/// If string reference is null, returns a new string.
-///
-/// Returns a new string with the first letter capitalized.
-pub fn capitalize(token: &str) -> String {
-    let mut char_1 = token.chars();
+/// Returns a vector with the input string to lowercase.
+pub fn collect_input_arg() -> Vec<String> {
+    let mut input = String::new();
 
-    match char_1.next() {
-        None => String::new(),
-        Some(char) => char.to_uppercase().collect::<String>() + char_1.as_str(),
-    }
+    // Allowing user to input token name if not provided at runtime
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Could not read input");
+
+    vec![input.trim().to_lowercase()]
 }
 
 /// Function to collect command line arguments.
@@ -34,20 +34,6 @@ pub fn collect_cli_args() -> Vec<String> {
     }
 }
 
-/// Function to collect input from the user.
-///
-/// Returns a vector with the input string to lowercase.
-pub fn collect_input_arg() -> Vec<String> {
-    let mut input = String::new();
-
-    // Allowing user to input token name if not provided at runtime
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Could not read input");
-
-    vec![input.trim().to_lowercase()]
-}
-
 /// Function to confirm a choice from the user.
 ///
 /// The user is prompted to confirm a choice with a yes or no.
@@ -57,6 +43,7 @@ pub fn collect_input_arg() -> Vec<String> {
 /// match confirm_choice() {
 ///    true => println!("\n> User chose yes ..."),
 ///    false => println!("\n> User chose no ..."),
+/// }
 /// ```
 ///
 pub fn confirm_choice() -> bool {
@@ -66,13 +53,7 @@ pub fn confirm_choice() -> bool {
         .read_line(&mut choice)
         .expect("Failed to read line");
 
-    let yes = ["y", "yes"].contains(&choice.trim().to_lowercase().as_str());
-
-    if yes {
-        true
-    } else {
-        false
-    }
+    ["y", "yes"].contains(&choice.trim().to_lowercase().as_str())
 }
 
 /// Function to find the closest match of a given string in a list of strings.

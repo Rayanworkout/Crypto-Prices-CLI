@@ -1,6 +1,7 @@
-use crate::utils::capitalize;
 
 use std::{collections::HashMap, error::Error, fmt};
+use crypto_prices::Capitalize;
+
 
 #[derive(Debug)]
 pub enum GetPriceError {
@@ -69,7 +70,7 @@ pub async fn get_price(token: &str) -> Result<(), GetPriceError> {
         formatted_price = format!("{:.4}", price);
     }
 
-    println!("\n>> {}: {} $\n", capitalize(&token), formatted_price);
+    println!("\n>> {}: {} $\n", &token.capitalize(), formatted_price);
 
     Ok(())
 }
